@@ -11,7 +11,7 @@ if __name__ == '__main__':
     f = open('random_submission.csv','w')
     print >> f, 'Id,Prediction'
     for subject in subjects:
-        filename = 'test/test_subject'+str(subject)+'.mat'
+        filename = 'data/test_subject'+str(subject)+'.mat'
         print "Loading", filename
         data = loadmat(filename, squeeze_me=True)
         ids = data['Id']
