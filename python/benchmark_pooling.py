@@ -14,10 +14,10 @@ def create_features(XX, tmin, tmax, sfreq):
     end = np.round((tmax - tmin_original) * sfreq).astype(np.int)
     XX = XX[:, :, beginning:end].copy()
 
-    print "2D Reshaping."
-    XX = XX.reshape(XX.shape[0], -1)
+    print "2D Reshaping: concatenating all 306 timeseries."
+    XX = XX.reshape(XX.shape[0], XX.shape[1] * XX.shape[2])
 
-    print "Feature-wise Normalization."
+    print "Features Normalization."
     XX -= XX.mean(0)
     XX = np.nan_to_num(XX / XX.std(0))
 
