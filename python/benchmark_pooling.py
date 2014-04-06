@@ -36,16 +36,24 @@ def create_features(XX, tmin, tmax, sfreq):
 
 if __name__ == '__main__':
 
-    subjects_train = range(1, 17)
+    print "DecMeg2014: https://www.kaggle.com/c/decoding-the-human-brain"
+    print
+    # here we use only subjects 01 to 06:
+    subjects_train = range(1, 7)
+    print "Training on subjects", subjects_train 
 
+    # we throw away everything outside the first 500ms from when the
+    # visual stimulus start:
     tmin = 0.0
     tmax = 0.500
+    print "Restricting MEG data to the interval [%s, %s]sec." % (tmin, tmax)
 
     X_train = []
     y_train = []
     X_test = []
     ids_test = []
 
+    print
     print "Creating the trainset."
     for subject in subjects_train:
         filename = 'data/train_subject%02d.mat' % subject
@@ -95,7 +103,7 @@ if __name__ == '__main__':
     print "Testset:", X_test.shape
 
     print
-    clf = LogisticRegression(random_state=0) # beware, you need 10Gb to train from 16 subjects!
+    clf = LogisticRegression(random_state=0) # Beware! You need 10Gb RAM to train LogisticRegression on all 16 subjects!
     print "Classifier:"
     print clf
     print "Training."
