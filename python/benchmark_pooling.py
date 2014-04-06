@@ -1,6 +1,10 @@
-"""Simple prediction of the test set by pooling all the trials of all
-subjects in one dataset, extracting the MEG data in the first 500ms
-and using a linear classifier.
+"""DecMeg2014 example code.
+
+Simple prediction of the class labels of the test set by:
+- pooling all the triaining trials of all subjects in one dataset.
+- Extracting the MEG data in the first 500ms from when the
+  stimulus starts.
+- Using a linear classifier (logistic regression).
 """
 
 import numpy as np
@@ -9,6 +13,12 @@ from scipy.io import loadmat
 
 
 def create_features(XX, tmin, tmax, sfreq):
+    """Creation of the feature space:
+    - restricting the time window of MEG data to [tmin, tmax]sec.
+    - Concatenating the 306 timeseries of each trial in one long
+      vector.
+    - Normalizing each feature independently (z-scoring).
+    """
     print "Applying the desired time window."
     beginning = np.round((tmin - tmin_original) * sfreq).astype(np.int)
     end = np.round((tmax - tmin_original) * sfreq).astype(np.int)
@@ -27,7 +37,6 @@ def create_features(XX, tmin, tmax, sfreq):
 if __name__ == '__main__':
 
     subjects_train = range(1, 17)
-    subjects_test = range(17, 24)
 
     tmin = 0.0
     tmax = 0.500
@@ -62,6 +71,7 @@ if __name__ == '__main__':
 
     print
     print "Creating the testset."
+    subjects_test = range(17, 24)
     for subject in subjects_test:
         filename = 'data/test_subject%02d.mat' % subject
         print "Loading", filename
