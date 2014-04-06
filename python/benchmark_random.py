@@ -1,23 +1,30 @@
+"""DecMeg2014 example code.
+
+Random prediction of the class labels of the test set by:
+"""
+
 import numpy as np
 from scipy.io import loadmat
-
-
 
 if __name__ == '__main__':
 
     np.random.seed(0)
-    subjects = range(17, 24)
+    subjects_test = range(17, 24)
 
-    f = open('random_submission.csv','w')
+    filename_submission = 'random_submission.csv'
+    print "Creating submission file", filename_submission, "..."
+    f = open(filename_submission,'w')
     print >> f, 'Id,Prediction'
-    for subject in subjects:
+    for subject in subjects_test:
         filename = 'data/test_subject'+str(subject)+'.mat'
-        print "Loading", filename
+        print "Loading", filename, ":",
         data = loadmat(filename, squeeze_me=True)
         ids = data['Id']
-        prediction = (np.random.rand(len(ids)) > 0.5).astype(np.int)
+        size = len(ids)
+        print size, 'trials.'
+        prediction = (np.random.rand(size) > 0.5).astype(np.int)
         for i, ids_i in enumerate(ids):
             print >> f, str(ids_i) + ',' + str(prediction[i])
 
     f.close()
-                      
+    print "Done."
