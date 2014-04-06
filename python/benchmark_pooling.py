@@ -38,12 +38,11 @@ if __name__ == '__main__':
 
     print "DecMeg2014: https://www.kaggle.com/c/decoding-the-human-brain"
     print
-    # here we use only subjects 01 to 06:
-    subjects_train = range(1, 7)
+    subjects_train = range(1, 7) # use range(1, 17) for all subjects
     print "Training on subjects", subjects_train 
 
-    # we throw away everything outside the first 500ms from when the
-    # visual stimulus start:
+    # We throw away all the MEG data outside the first 0.5sec from when
+    # the visual stimulus start:
     tmin = 0.0
     tmax = 0.500
     print "Restricting MEG data to the interval [%s, %s]sec." % (tmin, tmax)
