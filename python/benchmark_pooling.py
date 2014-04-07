@@ -12,7 +12,7 @@ from sklearn.linear_model import LogisticRegression
 from scipy.io import loadmat
 
 
-def create_features(XX, tmin, tmax, sfreq):
+def create_features(XX, tmin, tmax, sfreq, tmin_original=-0.5):
     """Creation of the feature space:
     - restricting the time window of MEG data to [tmin, tmax]sec.
     - Concatenating the 306 timeseries of each trial in one long
