@@ -7,9 +7,9 @@ The code is available both in Python and Matlab, with minor differences.
 
 Initially, two basic benchmarks are available:
 
-1. benchmark_random : the code loads the files of the test set, collects the IDs of the trials in the test set and creates a valid submission file with them and by creating random class labels.
+* benchmark_random : the code loads the files of the test set, collects the IDs of the trials in the test set and creates a valid submission file with them and by creating random class labels.
 
-2. benchmark_pooling : here the underlying idea is to ignore the differences between the pattern of brain activity of the different subjects: that they are pooled together. the code loads the files of the train subjects in the train and of the test subjects in the test set. Then it creates a simple feature space by keeping only the data of the first 0.5sec from when the stimulus starts and then concatenating all the 306 timeseries into one feature vector. After a simple z-scoring of each feature, a linear classifier is trained on the train set and the class labels of the test set are predicted. A valid submission file is created from the predicted class labels.
+* benchmark_pooling : here the underlying idea is to ignore the differences between the pattern of brain activity of the different subjects: that they are pooled together. the code loads the files of the train subjects in the train and of the test subjects in the test set. Then it creates a simple feature space by keeping only the data of the first 0.5sec from when the stimulus starts and then concatenating all the 306 timeseries into one feature vector. After a simple z-scoring of each feature, a linear classifier is trained on the train set and the class labels of the test set are predicted. A valid submission file is created from the predicted class labels.
 
 To run the benchmarks,
 
