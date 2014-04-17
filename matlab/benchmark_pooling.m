@@ -2,7 +2,9 @@
 % Simple prediction of the class labels of the test set by:
 %   - pooling all the triaining trials of all subjects in one dataset.
 %   - Extracting the MEG data in the first 500ms from when the stimulus starts.
-% - Using a linear classifier (logistic regression).
+% - Using a linear classifier (elastic net).
+% Implemented by Seyed Mostafa Kia (seyedmostafa.kia@unitn.it) and Emanuele
+% Olivetti (olivetti@fbk.eu) as a benchmark for DecMeg 2014.
 clear all;
 disp('DecMeg2014: https://www.kaggle.com/c/decoding-the-human-brain');
 subjects_train = 1:16;    
@@ -16,10 +18,11 @@ X_train = [];
 y_train = [];
 X_test = [];
 ids_test = [];
-% Crating the trainset.
+% Crating the trainset. (Please specify the absolute path for the train data)
 disp('Creating the trainset.');
 for i = 1 : length(subjects_train)
-    filename = sprintf('/home/mosi/Project/bm2014/data/train_subject%02d.mat',subjects_train(i));
+    path = '.../data/';  % Specify absolute path
+    filename = sprintf(strcat(path,'train_subject%02d.mat'),subjects_train(i));
     disp(strcat('Loading ',filename));
     data = load(filename);
     XX = data.X;
@@ -35,11 +38,12 @@ for i = 1 : length(subjects_train)
     y_train = [y_train;yy];
 end
 
-% Crating the testset.
+% Crating the testset. (Please specify the absolute path for the test data)
 disp('Creating the testset.');
 subjects_test = 17:23;
 for i = 1 : length(subjects_test)
-    filename = sprintf('/home/mosi/Project/bm2014/data/test_subject%02d.mat',subjects_test(i));
+    path = '.../data/'; % Specify absolute path
+    filename = sprintf(strcat(path,'test_subject%02d.mat'),subjects_test(i));
     disp(strcat('Loading ',filename));
     data = load(filename);
     XX = data.X;
