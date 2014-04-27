@@ -1,27 +1,17 @@
 """DecMeg2014 example code.
 
-Convert each MAT file, officially distributed by the competition, into a
-comma-separated value (CSV) file. Each line of the CSV file is a
+Convert each MAT file, officially distributed by the competition, into
+a comma-separated value (CSV) file. Each line of the CSV file is a
 trial. For train data, the first value is the class-label of the trial
 (y), i.e. the category of the stimulus presented to the subject
 (1=Face, 0=Scramble). For test data, the first value is the Id of the
 trial. In both cases, the remaining values in the line are the MEG
-values (X) of the timeseries of that trial. Each timeseries consists
-of 375 timepoints, i.e. 1.5sec recorded at 250Hz. The groups of 375
-values of each of the 306 timeseries are saved sequentially, with the
-channels/sensors in the same order as in the MAT file. For this
-reason, each line consists of (1 + 306 x 375) = 114751 values.
-
-Each line of the CSV file is a trial. For train data, the first value
-is the class-label of the trial (y), i.e. the category of the stimulus
-presented to the subject (1=Face, 0=Scramble). For test data, the
-first value is the Id of the trial. In both cases, the remaining
-values in the line are the MEG values (X) of the multiple timeseries
-of that trial stored sequentially. Each timeseries consists of 375
-timepoints, i.e. 1.5sec recorded at 250Hz. The groups of 375 values,
-one for each of the 306 channel/sensor, are stored sequentially, with
-the channels/sensors in the same order as in the MAT file. For this
-reason, each line consists of (1 + 375 x 306) = 114751 values.
+values (X) of the multiple timeseries of that trial stored
+sequentially. Each timeseries consists of 375 timepoints, i.e. 1.5sec
+recorded at 250Hz. The groups of 375 values, one for each of the 306
+channel/sensor, are stored sequentially, with the channels/sensors in
+the same order as in the MAT file. For this reason, each line consists
+of (1 + 375 x 306) = 114751 values.
 
 The first line of the CSV file describes the 114751 fields of the
 file: 'y' is the stimulus value, while 'XCCCttt' is the MEG value (X)
