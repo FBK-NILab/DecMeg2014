@@ -1,6 +1,8 @@
 """DecMeg2014 example code.
 
 Random prediction of the class labels of the test set by:
+
+Copyright Emanuele Olivetti 2014, BSD license, 3 clauses.
 """
 
 import numpy as np

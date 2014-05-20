@@ -5,6 +5,8 @@ Simple prediction of the class labels of the test set by:
 - Extracting the MEG data in the first 500ms from when the
   stimulus starts.
 - Using a linear classifier (logistic regression).
+
+Copyright Emanuele Olivetti 2014, BSD license, 3 clauses.
 """
 
 import numpy as np
