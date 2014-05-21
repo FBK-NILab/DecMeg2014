@@ -16,20 +16,29 @@ from topography import topography
 if __name__ == '__main__':
 
     subject = 1
+    tmin = 0.0 # in sec.
+    tmax = 1.0 # in sec.
     cv = 5 # numbers of fold of cross-validation
-
-    clf = LogisticRegression(random_state=0)
-
     filename = 'data/train_subject%02d.mat' % subject
+    layout_filename = '../additional_files/Vectorview-all.lout'
+    
     print "Loading %s" % filename
     data = loadmat(filename, squeeze_me=True)
     X = data['X']
     y = data['y']
+    sfreq = data['sfreq']
+
+    print "Applying the desired time window: [%s, %s] sec." % (tmin, tmax)
+    time = np.linspace(-0.5, 1.0, 375)
+    time_window = np.logical_and(time >= tmin, time <= tmax)
+    X = X[:,:,time_window]
+    time = time[time_window]
 
     print "Loading channels name."
-    channel_name = np.loadtxt('../additional_files/Vectorview-all.lout', skiprows=1, usecols=(5,), delimiter='\t', dtype='S')
+    channel_name = np.loadtxt(layout_filename, skiprows=1, usecols=(5,), delimiter='\t', dtype='S')
 
     print "Computing cross-validated accuracy for each channel."
+    clf = LogisticRegression(random_state=0)
     score_channel = np.zeros(X.shape[1])
     for channel in range(X.shape[1]):
         print "Channel %d (%s) :" % (channel, channel_name[channel]),
@@ -45,38 +54,38 @@ if __name__ == '__main__':
     plt.interactive(True)
 
     print "Loading channels coordinates."
-    coords_xy = np.loadtxt('../additional_files/Vectorview-all.lout', skiprows=1, usecols=(1,2))
+    coords_xy = np.loadtxt(layout_filename, skiprows=1, usecols=(1,2))
     plt.figure()
     topography(score_channel, coords_xy[:,0], coords_xy[:,1])
     plt.title("Classification Accuracy at each Channel")
 
     print
-    print "Channels with highest accuracy:",
+    print "Channels with the highest accuracy:",
     n_best = 3
     best_channels = np.argsort(score_channel)[-n_best:][::-1]
     print best_channels
+
     print "Plotting the average signal of each class."
     X_best_face = (X[:,best_channels,:][y==1]).mean(0) * 1.0e15
     X_best_scramble = (X[:,best_channels,:][y==0]).mean(0) * 1.0e15
-    X_best_face_std = (X[:,best_channels,:][y==1]).std(0) * 1.0e15
-    X_best_scramble_std = (X[:,best_channels,:][y==0]).std(0) * 1.0e15
-    time = np.linspace(-0.5, 1.0, 375)
     plt.figure()
     for i, channel in enumerate(best_channels):
         plt.subplot(n_best,1,i+1)
         plt.plot(time, X_best_face[i], 'r-')
         plt.plot(time, X_best_scramble[i], 'b-')
         plt.axis('tight')
-        plt.text(0.6, X_best_face[i].max(), str(i+1)+') '+str(channel_name[channel])+' = '+("%0.2f" % score_channel[channel]), bbox=dict(facecolor='white', alpha=1.0))
+        tmp = min(X_best_face[i].min(), X_best_scramble[i].min())
+        text_y = (max(X_best_face[i].max(), X_best_scramble[i].max()) - tmp)*0.9 + tmp
+        plt.text(0.6, text_y, str(i+1)+') '+str(channel_name[channel])+' = '+("%0.2f" % score_channel[channel]), bbox=dict(facecolor='white', alpha=1.0))
         if i == (len(best_channels) - 1):
             plt.xlabel('Time (sec)')
             
         if i == (len(best_channels) / 2):
             plt.ylabel('Magnetic Field (fT)')
 
-    # highlight best channels:
+    print "Plotting location of the best channels."
     plt.figure()
-    v=np.zeros(306)
+    v = np.zeros(306)
     v[best_channels] = np.arange(n_best) + 1
     topography(v, coords_xy[:,0], coords_xy[:,1])
 
@@ -89,14 +98,8 @@ if __name__ == '__main__':
 
 
     print "Computing cross-validated accuracy for each pair of gradiometers."
-    # Here follows a somewhat involved :) but general code to pair
-    # gradiometers according to their name:
-    # grad_indexes = np.array([cn[-1]!='1' for cn in channel_name], dtype=np.bool)
-    # triplet_name = sorted(set([cn[:-1] for cn in channel_name]))
-    # grad_pair_name = [filter(lambda cn: cn.startswith(tn), channel_name[grad_indexes]) for tn in triplet_name]
-    # grad_pair_idx = [[np.where(channel_name==grad1)[0][0], np.where(channel_name==grad2)[0][0]] for grad1, grad2 in grad_pair_name]
-
-    # The previous code is equivalent to:
+    clf = LogisticRegression(random_state=0)
+    # Gradiometers are already ordered in pairs for each location in the dataset:
     grad_pair_idx = np.array((range(0,306,3), range(1,306,3))).T
 
     score_grad_pair = np.zeros(len(grad_pair_idx))
