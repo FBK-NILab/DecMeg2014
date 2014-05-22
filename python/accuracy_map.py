@@ -16,7 +16,7 @@ from topography import topography
 if __name__ == '__main__':
 
     subject = 1
-    tmin = 0.0 # in sec.
+    tmin = -0.5 # in sec.
     tmax = 1.0 # in sec.
     cv = 5 # numbers of fold of cross-validation
     filename = 'data/train_subject%02d.mat' % subject
@@ -58,6 +58,7 @@ if __name__ == '__main__':
     plt.figure()
     topography(score_channel, coords_xy[:,0], coords_xy[:,1])
     plt.title("Classification Accuracy at each Channel")
+    plt.savefig('subject_%02d_sensor_map.png' % subject)
 
     print
     print "Channels with the highest accuracy:",
@@ -83,6 +84,8 @@ if __name__ == '__main__':
         if i == (len(best_channels) / 2):
             plt.ylabel('Magnetic Field (fT)')
 
+    plt.savefig('subject_%02d_best_3_channels_avg_signal.png' % subject)
+
     print "Plotting location of the best channels."
     plt.figure()
     v = np.zeros(306)
@@ -95,7 +98,7 @@ if __name__ == '__main__':
     plt.figure()
     topography(score_channel[mag_indexes], coords_xy[mag_indexes,0], coords_xy[mag_indexes,1])
     plt.title("Classification Accuracy at each Magnetometer")
-
+    plt.savefig('subject_%02d_mag_map.png' % subject)
 
     print "Computing cross-validated accuracy for each pair of gradiometers."
     clf = LogisticRegression(random_state=0)
@@ -117,6 +120,7 @@ if __name__ == '__main__':
     plt.figure()
     topography(score_grad_pair, coords_xy[mag_indexes,0], coords_xy[mag_indexes,1])
     plt.title("Classification Accuracy at each Pair of Gradiometers")
+    plt.savefig('subject_%02d_grads_map.png' % subject)
     
     # plt.show()
 
