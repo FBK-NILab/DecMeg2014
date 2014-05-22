@@ -21,3 +21,9 @@ To run the benchmarks,
 
 Each benchmark creates a file "submission.csv".
 
+There are also some scripts to visualise how classification accuracy varies from one location to another. These files are meant for visualisation purpose. Here follows a brief description:
+
+* accuracy_map : creates accuracy sensor maps from the data of one subject. The decoding accuracy at each sensor is represented by a color at its location. The decoding accuracy at a sensor is the cross-validated accuracy using the timeseries of that sensor only. Notice that three maps are generated. One has all 306 sensors. One has only magnetometers. One has only gradiometers (in pairs). Showing separate sensor maps for magnetometers and (pairs of) magnetometers is typical in MEG data analysis.
+* Vectorview-all.lout: text file with the 2D approximate coordinates of each sensor. Used by accuracy_map.
+* NeuroMagSensorsDeviceSpace.mat : this file contains the 3D locations of each sensor and the 3D directions along which each sensor measures the magnetic field. The numbers are related to the Neuromag VectorView system used in the experiment where MEG data were collected. This file is kindly provided by Prof.Rik Henson and can be freely used/distributed.
+* neuromag_vectorview_3d_layout : just a few lines of code to display the information in NeuroMagSensorsDeviceSpace.mat, in 3D using mayavi.
